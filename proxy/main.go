@@ -5,14 +5,16 @@ import (
 	"github.com/go-chi/chi"
 	"log"
 	"net/http"
+	"net/http/httputil"
+	"net/url"
 	"os"
 	"time"
 )
 
 func main() {
 	r := chi.NewRouter()
-
-	// ...
+	proxy := NewReverseProxy(":", "1313")
+	r.Use(proxy.ReverseProxy)
 
 	http.ListenAndServe(":8080", r)
 }
@@ -31,7 +33,16 @@ func NewReverseProxy(host, port string) *ReverseProxy {
 
 func (rp *ReverseProxy) ReverseProxy(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-
+		target := &url.URL{
+			Scheme: "http",
+			Host:   rp.host + ":" + rp.port,
+		}
+		proxy := httputil.NewSingleHostReverseProxy(target)
+		proxy.Director = func(r *http.Request) {
+			r.URL.Scheme = target.Scheme
+			r.URL.Host = target.Host
+		}
+		next.ServeHTTP(w, r)
 	})
 }
 
