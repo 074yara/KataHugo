@@ -19,11 +19,17 @@ func main() {
 	proxy := NewReverseProxy("hugo", "1313")
 	r.Use(middleware.Logger, middleware.Recoverer)
 	r.Use(proxy.ReverseProxy)
-	fmt.Println("The server is running on port", port)
-	if err := http.ListenAndServe(":"+port, r); err != nil {
-		log.Fatal(err)
-	}
+	r.Get("/*", func(w http.ResponseWriter, _ *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})
 
+	fmt.Println("The server is running on port", port)
+	go func() {
+		if err := http.ListenAndServe(":"+port, r); err != nil {
+			log.Fatal(err)
+		}
+	}()
+	timeAndCounterWorker()
 }
 
 type ReverseProxy struct {
