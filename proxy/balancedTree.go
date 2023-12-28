@@ -1,4 +1,4 @@
-package binaryTree
+package main
 
 import (
 	"fmt"
@@ -30,27 +30,27 @@ func (t *AVLTree) Insert(key int) {
 
 // ToMermaid возвращает строковое представление дерева для использования в Mermaid.
 func (t *AVLTree) ToMermaid() string {
-	return toMermaid(t.Root)
+	return toMermaid(t.Root, "")
 }
 
-func toMermaid(node *Node) string {
+func toMermaid(node *Node, currentCode string) string {
 	if node == nil {
-		return ""
+		return currentCode
 	}
 
-	mermaidCode := fmt.Sprintf("graph TD;\n  %d", node.Key)
+	currentCode += fmt.Sprintf("%v", node.Key)
 	if node.Left != nil {
-		mermaidCode += fmt.Sprintf(" --> %d", node.Left.Key)
+		currentCode += fmt.Sprintf(" --> %d", node.Left.Key)
 	}
 	if node.Right != nil {
-		mermaidCode += fmt.Sprintf(" --> %d", node.Right.Key)
+		currentCode += fmt.Sprintf(" --> %d", node.Right.Key)
 	}
 
-	mermaidCode += ";\n"
-	mermaidCode += toMermaid(node.Left)
-	mermaidCode += toMermaid(node.Right)
+	currentCode += ";\n"
+	currentCode = toMermaid(node.Left, currentCode)
+	currentCode = toMermaid(node.Right, currentCode)
 
-	return mermaidCode
+	return currentCode
 }
 
 // height возвращает высоту узла (0 для nil).

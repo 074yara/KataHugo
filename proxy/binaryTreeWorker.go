@@ -1,23 +1,31 @@
-package workers
+package main
 
 import (
 	"bytes"
-	"hugoproxy/binaryTree"
 	"math/rand"
 	"os"
 	"time"
 )
 
 var (
-	binaryTreePath = `/app/static/tasks/binary.md`
-	head           = `{{< mermaid [class="text-center"]>}}\n`
-	tail           = `{{< /mermaid >}}`
+	binaryTreePath = "/app/static/tasks/binary.md"
+	tail           = "{{< /mermaid >}}"
+	head           = `---
+menu:
+    after:
+        name: binary_tree
+        weight: 2
+title: Построение сбалансированного бинарного дерева
+---
+{{< mermaid >}}
+graph TD;
+`
 )
 
 func BinaryTreeWorker() {
 	buff := &bytes.Buffer{}
 	for {
-		tree := binaryTree.GenerateTree(5)
+		tree := GenerateTree(5)
 		data := makeMermaidToFileData(buff, tree)
 		err := os.WriteFile(binaryTreePath, data, 0644)
 		checkError(err)
@@ -32,7 +40,7 @@ func BinaryTreeWorker() {
 	}
 }
 
-func makeMermaidToFileData(buff *bytes.Buffer, tree *binaryTree.AVLTree) []byte {
+func makeMermaidToFileData(buff *bytes.Buffer, tree *AVLTree) []byte {
 	buff.Reset()
 	_, err := buff.Write(stringToByte(head))
 	checkError(err)
