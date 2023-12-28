@@ -1,4 +1,4 @@
-package main
+package workers
 
 import (
 	"bytes"
@@ -8,12 +8,12 @@ import (
 	"time"
 )
 
-var filepath = "/app/static/tasks/_index.md"
+var indexFilePath = "/app/static/tasks/_index.md"
 
-func timeAndCounterWorker() {
+func TimeAndCounterWorker() {
 	var timeField, counterField []byte
 	var counter int
-	data, err := os.ReadFile(filepath)
+	data, err := os.ReadFile(indexFilePath)
 	checkError(err)
 	newData := make([]byte, len(data))
 	fields := bytes.Split(data, []byte("\n"))
@@ -33,7 +33,7 @@ func timeAndCounterWorker() {
 		newCounterField := []byte(fmt.Sprintf("Счетчик: %v", counter))
 		newData = bytes.Replace(data, timeField, newTimeField, 1)
 		newData = bytes.Replace(newData, counterField, newCounterField, 1)
-		err = os.WriteFile(filepath, newData, 0644)
+		err = os.WriteFile(indexFilePath, newData, 0644)
 		checkError(err)
 	}
 }

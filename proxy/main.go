@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	workers2 "hugoproxy/proxy/workers"
 	"log"
 	"net/http"
 	"net/http/httputil"
@@ -29,7 +30,8 @@ func main() {
 			log.Fatal(err)
 		}
 	}()
-	timeAndCounterWorker()
+	go workers2.TimeAndCounterWorker()
+	workers2.BinaryTreeWorker()
 }
 
 type ReverseProxy struct {

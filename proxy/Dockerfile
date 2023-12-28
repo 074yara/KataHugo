@@ -10,7 +10,7 @@ COPY . .
 RUN go mod init test && go mod tidy
 
 # Собираем приложение
-RUN go build -o main
+RUN go build -o main ./
 
 # Начинаем новую стадию сборки на основе минимального образа
 FROM alpine:latest

@@ -12,6 +12,8 @@ services:
       - "1313:1313"
     networks:
         - mylocal
+    environment:
+      - TZ=Europe/Moscow
   app:
     build: ./proxy
     container_name: proxy
@@ -21,8 +23,6 @@ services:
       - "8080:8080"
     networks:
         - mylocal
-    environment:
-      - TZ=Europe/Moscow
 networks:
     mylocal:
         driver: bridge
