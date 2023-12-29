@@ -5,11 +5,11 @@ import (
 	"math/rand"
 )
 
-type Node struct {
+type NodeGraph struct {
 	ID    int
 	Name  string
 	Form  string // "circle", "rect", "square", "ellipse", "round-rect", "rhombus"
-	Links []*Node
+	Links []*NodeGraph
 }
 
 var forms = []string{"circle", "rect", "square", "round-rect", "rhombus"}
@@ -19,15 +19,15 @@ func main() {
 	fmt.Println(GenerateMermaidCode(graph))
 }
 
-func GenerateRandomGraph(nodeCount int) *Node {
-	var graph []*Node
+func GenerateRandomGraph(nodeCount int) *NodeGraph {
+	var graph []*NodeGraph
 	//Generate nodes
 	for i := 1; i <= nodeCount; i++ {
-		node := &Node{
+		node := &NodeGraph{
 			ID:    i,
 			Name:  fmt.Sprintf("Node_%v", i),
 			Form:  forms[rand.Intn(len(forms))],
-			Links: []*Node{},
+			Links: []*NodeGraph{},
 		}
 		graph = append(graph, node)
 	}
@@ -43,7 +43,7 @@ func GenerateRandomGraph(nodeCount int) *Node {
 	return graph[rand.Intn(len(graph))]
 }
 
-func getRandomNode(graph []*Node, excludeNode *Node) *Node {
+func getRandomNode(graph []*NodeGraph, excludeNode *NodeGraph) *NodeGraph {
 	for {
 		node := graph[rand.Intn(len(graph))]
 		if node != excludeNode {
@@ -52,12 +52,12 @@ func getRandomNode(graph []*Node, excludeNode *Node) *Node {
 	}
 }
 
-func printGraph(start *Node) {
+func printGraph(start *NodeGraph) {
 	fmt.Println("Generated graph:")
 	printNode(start, make(map[int]struct{}))
 }
 
-func printNode(node *Node, visited map[int]struct{}) {
+func printNode(node *NodeGraph, visited map[int]struct{}) {
 	if _, exists := visited[node.ID]; exists {
 		return
 	}
@@ -68,7 +68,7 @@ func printNode(node *Node, visited map[int]struct{}) {
 	}
 }
 
-func GenerateMermaidCode(graph *Node) string {
+func GenerateMermaidCode(graph *NodeGraph) string {
 	mermaidCode := "{{< mermaid >}}\ngraph LR\n"
 	visited := make(map[int]struct{})
 	generateMermaidRec(graph, visited, &mermaidCode)
@@ -76,7 +76,7 @@ func GenerateMermaidCode(graph *Node) string {
 	return mermaidCode
 }
 
-func generateMermaidRec(node *Node, visited map[int]struct{}, mermaidCode *string) {
+func generateMermaidRec(node *NodeGraph, visited map[int]struct{}, mermaidCode *string) {
 	if _, exists := visited[node.ID]; exists {
 		return
 	}
@@ -89,7 +89,7 @@ func generateMermaidRec(node *Node, visited map[int]struct{}, mermaidCode *strin
 	}
 }
 
-func bracketChoice(node *Node) (string, string) {
+func bracketChoice(node *NodeGraph) (string, string) {
 	switch node.Form {
 	case "circle":
 		return "((", "))"
