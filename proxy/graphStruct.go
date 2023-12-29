@@ -8,7 +8,7 @@ import (
 type NodeGraph struct {
 	ID    int
 	Name  string
-	Form  string // "circle", "rect", "square", "ellipse", "round-rect", "rhombus"
+	Form  string // "circle", "rect", "square", "round-rect", "rhombus"
 	Links []*NodeGraph
 }
 
@@ -33,7 +33,12 @@ func GenerateRandomGraph(nodeCount int) *NodeGraph {
 		}
 
 	}
-	return graph[rand.Intn(len(graph))]
+	for _, node := range graph {
+		if len(node.Links) > 1 {
+			return node
+		}
+	}
+	return graph[rand.Intn(nodeCount)]
 }
 
 func getRandomNode(graph []*NodeGraph, excludeNode *NodeGraph) *NodeGraph {
