@@ -12,13 +12,6 @@ type NodeGraph struct {
 	Links []*NodeGraph
 }
 
-var forms = []string{"circle", "rect", "square", "round-rect", "rhombus"}
-
-func main() {
-	graph := GenerateRandomGraph(10)
-	fmt.Println(GenerateMermaidCode(graph))
-}
-
 func GenerateRandomGraph(nodeCount int) *NodeGraph {
 	var graph []*NodeGraph
 	//Generate nodes

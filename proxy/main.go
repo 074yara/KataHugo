@@ -30,7 +30,8 @@ func main() {
 		}
 	}()
 	go TimeAndCounterWorker()
-	BinaryTreeWorker()
+	go BinaryTreeWorker()
+	GraphStructWorker()
 }
 
 type ReverseProxy struct {

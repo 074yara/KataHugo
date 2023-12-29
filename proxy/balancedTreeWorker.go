@@ -7,10 +7,7 @@ import (
 	"time"
 )
 
-var (
-	binaryTreePath = "/app/static/tasks/binary.md"
-	tail           = "{{< /mermaid >}}"
-	head           = `---
+var balancedTreeHead = `---
 menu:
     after:
         name: binary_tree
@@ -20,7 +17,6 @@ title: Построение сбалансированного бинарног�
 {{< mermaid >}}
 graph TD;
 `
-)
 
 func BinaryTreeWorker() {
 	buff := &bytes.Buffer{}
@@ -42,7 +38,7 @@ func BinaryTreeWorker() {
 
 func makeMermaidToFileData(buff *bytes.Buffer, tree *AVLTree) []byte {
 	buff.Reset()
-	_, err := buff.Write(stringToByte(head))
+	_, err := buff.Write(stringToByte(balancedTreeHead))
 	checkError(err)
 	_, err = buff.Write(stringToByte(tree.ToMermaid()))
 	checkError(err)

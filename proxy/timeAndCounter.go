@@ -8,8 +8,6 @@ import (
 	"time"
 )
 
-var indexFilePath = "/app/static/tasks/_index.md"
-
 func TimeAndCounterWorker() {
 	var timeField, counterField []byte
 	var counter int
